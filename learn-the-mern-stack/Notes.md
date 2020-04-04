@@ -125,3 +125,64 @@ toggle = () => {
 }
 ```
 ---
+
+In the client folder install **redux**, **react-redux** and **redux-thunk**
+```
+cd client
+npm install redux
+npm install react-redux
+npm install redux-thunk
+```
+
+###store
+- **client/src/store.js*
+- A store holds the whole state tree structure of your application.
+- The only way to change the status inside it is to dispatch an action on it.
+- [https://redux.js.org/api-reference/store](https://redux.js.org/api-reference/store)
+
+### Reducers
+- A reducer is where you states will actually go and where we check our actions.
+- A root reducer is to bring together all of our other reducers.
+
+#### actions/types.js (sometimes called constants.js)
+- Variables that are set strings that we export.
+
+#### connect component in react-redux allows us to get state from Redux into React.
+- Instead of exporting the actual class of the component we want to export connect.
+```
+const mapStateToProps = (state) => ({
+    item: state.item
+});
+
+export default connect(mapStateToProps, { getItems })(ShoppingList);
+```
+- **mapStateToProps** allows us to take our item state and map it into a component property so we can use it as **this.props.items**.
+
+#### Whenever you have component properties you should put them inside of **PropTypes** (which is basically a form of validation).
+
+#### When you bring in an action from Redux it will be stored as a prop.
+```
+ShoppingList.PropTypes = {
+    getItems: PropTypes.func.isRequired,
+    item: PropTypes.object.isRequired
+}
+```
+
+#### A **container** is basically a component that is hooked to Redux.
+- That is, if you're using a Redux state inside of a React component it is called a container.
+- Sometimes people will have a **containers** folder outside of the regular **components** folder.
+
+#### Whenever you have a form you're going to want to have that form input have a piece of state in that form component.
+- That is because not everything belongs in the application/Redux state.
+
+#### In the itemReducer note that we use the spread operator.
+- We do this because we can't mutate the state so we copy it.
+```
+...
+        case ADD_ITEM:
+            return {
+                ...state,
+                items: [action.payload, ...state.items]
+            }
+...
+```
