@@ -1,3 +1,18 @@
+
+---
+## If you get the message that the server is already running on the port
+- At a terminal window find the node process
+```
+sudo lsof -i :5000
+COMMAND   PID  USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+node    12285 craig   20u  IPv6 11035840      0t0  TCP *:5000 (LISTEN)
+```
+- then kill the process
+```
+kill -9 12285
+```
+---
+
 MERN stands for
 - MongoDB - a NoSQL database
 - Express - a backend framework mostly used for building APIs
@@ -32,7 +47,21 @@ npm install -D nodemon
 - **mongoose** to interact with MongoDB
 - **concurrently** allows you to run more than one npm script at once so you can run the server and the client at the same time
 - **nodemon** monitors the back end for file updates so you don't need to constantly restart the server whenever you make a change
-  
+---
+#### Note that **express** now includes **body-parser** so you no longer need to require it in server.js. So you can replace
+```
+app.use(bodyParser.json());
+```
+with
+```
+app.use(express.json());
+```
+and remove body-parser with
+```
+npm remove body-parser
+```
+---  
+
 Note that you can install multiple npm components in one command like
 ```
 npm i express body-parser mongoose concurrently
@@ -221,3 +250,25 @@ heroku git:remote -a <heroku_app_name>
 git push heroku master
 ```
 - **git push heroku master** should run the heroku-postbuild script.
+
+# Backend with JWT Auth
+- Install **bcryptjs**
+- Use this to avoid depency issues with standard bcrypt.
+```
+npm install bcryptjs
+```
+
+- Install **jsonwebtoken** so we can use tokens with JWT. ([https://jwt.io/](https://jwt.io/))
+```
+npm install jsonwebtoken so instead of having a config/keys.js file we'll have a config/default.json file that doesn't get commited with the repo.
+```
+- Install **config** 
+```
+npm install config
+```
+
+- jwt can be used synchronously of asynchronously.
+- jwt's authentication is stateless. (Not like sessions where authentication data is stored on the server.)
+    - So we need a route to constantly validate that the user is logged in and return the user token.
+
+### You can set any request variables in the middleware.
