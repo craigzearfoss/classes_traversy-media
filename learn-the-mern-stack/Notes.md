@@ -127,6 +127,7 @@ toggle = () => {
 ---
 
 In the client folder install **redux**, **react-redux** and **redux-thunk**
+- **thunk** allows us to make asynchronous requests.
 ```
 cd client
 npm install redux
@@ -186,3 +187,37 @@ ShoppingList.PropTypes = {
             }
 ...
 ```
+
+## Install **axios** in the client directory.
+- **axios** is an http client.
+```
+cd client
+npm install axios
+```
+
+# Prepare and Deploy
+- If it was just a front end app you could just run **npm run build** which puts the files to deploy in the **build** directory.
+- Since we have both a front end and back end server we will create a postbuild script that will run the build on the deployment server.
+- **path** is a core React module that deals with file paths.
+
+## For Heroku install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+```
+sudo snap install --classic heroku
+```
+- From your main project directory login to Heroku.
+```
+heroku login
+```
+- Create a new Heroku app. (This will create an app with a weird name in your Heroku dashboard.)
+```
+heroku create
+```
+- We deploy to Heroku with git.
+```
+git init
+git add .
+git commit -am "Version 1.0.0"
+heroku git:remote -a <heroku_app_name>
+git push heroku master
+```
+- **git push heroku master** should run the heroku-postbuild script.
