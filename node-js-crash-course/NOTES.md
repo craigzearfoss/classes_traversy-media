@@ -1,5 +1,8 @@
 # Node.js Crash Course
-
+- Traversy Media
+- https://www.youtube.com/watch?v=fBNz5xF-Kx4
+- Feb 6, 2019
+- Completed Apr 4, 2020
 ---
 
 ### What is Node.js
