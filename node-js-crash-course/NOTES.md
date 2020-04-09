@@ -49,10 +49,26 @@
 ```
 npm init                    - Generates a package.json file
 npm install express         - Installs a package locally
-npm install -g nodemon      - Installs a package globally
+npm install -g nodemon      - Installs a package globally (DON'T INSTALL NODEMON GLOBALLY)
 ```
 
-### Node Moduiles
+### nodemon Module
+
+- nodemon monitors your files for changes and when the are detected it automatically restarts the server so you don't have to do it manually.
+- It's not good practice to install nodemon globally so we usually add a script for it in the _package.json_ file.
+
+```
+...
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+...
+```
+
+Then to run in from the command line just enter **npm run dev**.
+
+### Node Modules
 
 - Node Core Modules (path, fs, http, etc)
 - 3rd party modules/packages installed via NPM
@@ -162,3 +178,194 @@ import Person from ("./Person");
 - The methods are asynchronous, but they do also have synchronous methods.
 - If you use the synchronous methods you will have to wait until they complete.
 - Methods include: **mkdir**, **writeFile**, **appendFile**, **readFile**, **rename**
+
+#### [os](https://nodejs.org/dist/latest-v12.x/docs/api/os.html)
+
+- Provides operating system-related utility methods and properties.
+- Methods include: **platform**,, **arch**, **cpus**, **freemem**, **totalmem**, **homedir**, **uptime**
+
+#### [url](https://nodejs.org/dist/latest-v12.x/docs/api/url.html)
+
+- Provides utilities for URL resolution and parsing.
+- Properties include: **href**, **host**, **hostname**, **pathname**, **search**, **searchParams**
+- Methods include: **toString**, **searchParams.append**
+
+## Node Core Events
+
+- Much of Node is built around an asyncrhonous event-driven architecture
+- **emitter** objects emit named events that cause **listenters** (Function objects) to be called.
+- We can create event emitters and we can create event listeners that act on those events.
+
+## http Module
+
+## Extremely simple web server.
+
+```
+const http = require("http");
+
+// create server object
+http
+  .createServer((req, res) => {
+    // write response
+    res.write("Hello World");
+    res.end();
+  })
+  .listen(5000, () => console.log("Server running ..."));
+```
+
+## Simple web server
+
+```
+const http = require("http");
+const path = require("path");
+const fs = require("fs");
+
+const server = http.createServer((req, res) => {
+  if (req.url === "/") {
+    fs.readFile(
+      path.join(__dirname, "public", "index.html"),
+      (err, content) => {
+        if (err) throw err;
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.end(content);
+      }
+    );
+  }
+
+  if (req.url === "/api/users") {
+    const users = [{ name: "Bob Smith" }, { name: "John Doe" }];
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(users));
+  }
+});
+
+// this looks for the env variable and if not found sets the PORT to 5000
+const PORT = process.env.PORT || 5000;
+
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+```
+
+## Slightly improved web server
+```
+const http = require("http");
+const path = require("path");
+const fs = require("fs");
+
+const server = http.createServer((req, res) => {
+  // build file path
+  let filePath = path.join(
+    __dirname,
+    "public",
+    req.url === "/" ? "index.html" : req.url
+  );
+
+  // extension of the file
+  let extname = path.extname(filePath);
+
+  // initial content type
+  let contentType = "text/html";
+
+  // check and set content type
+  switch (extname) {
+    case ".js":
+      contentType = "text/javascript";
+      break;
+    case ".css":
+      contentType = "text/css";
+      break;
+    case ".json":
+      contentType = "application/json";
+      break;
+    case ".png":
+      contentType = "image/png";
+      break;
+    case ".jpg":
+      contentType = "image.jpg";
+      break;
+  }
+
+  // read file
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      if (err.code == "ENOENT") {
+        // page not found
+        fs.readFile(
+          path.join(__dirname, "public", "404.html"),
+          (erro, content) => {
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.end(content, "utf8");
+          }
+        );
+      } else {
+        // some server error
+        res.writeHead(500);
+        res.end(`Server Error: ${err.code}`);
+      }
+    } else {
+      // success
+      res.writeHead(200, { "Content-Type": contentType });
+      res.end(content, "utf8");
+    }
+  });
+});
+
+// this looks for the env variable and if not found sets the PORT to 5000
+const PORT = process.env.PORT || 5000;
+
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+```
+
+## Express makes creating a web server much easier.
+
+## Deploy to Heroku
+- Make sure you use process.env.PORT
+```
+const PORT = process.env.PORT || 5000;
+``` 
+- Make sure that you have your start script as node in *package.json*.
+```
+...
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+...
+```
+- Make sure you have the Heroku client installed. You can check with the following command.
+```
+heroku --version
+```
+- Stop your server.
+- Login to Heroku through the terminal.
+```
+heroku login
+```
+- Create a *.gitignore* file in the root of the project.
+```
+node_modules
+reference
+logger.js
+person.js
+```
+- Initialize the git repository
+```
+git init
+git add .
+git commit -m "initial commit"
+```
+- Create the Heroku app.
+```
+heroku create
+```
+- Go the your Heroku dashboard [https://dashboard.heroku.com/apps](https://dashboard.heroku.com/apps).
+  - Click on the newly created app.
+  - Click **Deploy** in the top tool bar.
+  - Look for the "Create a new Git repository" section and grab the line after "git init" and run it in your terminal to add it as a remote repository and then push to heroku master.
+```
+heroku git:remote -a <app_name>
+git push heroku master
+```
+- After it deploys enter **heroku** open to go to the app in your browser.
+```
+heroku open
+```
