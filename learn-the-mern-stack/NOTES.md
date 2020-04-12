@@ -325,7 +325,7 @@ npm install jsonwebtoken so instead of having a config/keys.js file we'll have a
 npm install config
 ```
 
-- jwt can be used synchronously of asynchronously.
+- jwt can be used synchronously or asynchronously.
 - jwt's authentication is stateless. (Not like sessions where authentication data is stored on the server.)
   - So we need a route to constantly validate that the user is logged in and return the user token.
 
