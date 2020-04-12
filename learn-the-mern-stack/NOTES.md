@@ -17,9 +17,9 @@ MERN stands for
 - MongoDB - a NoSQL database
 - Express - a backend framework mostly used for building APIs
 - React - a front end ui library / framwork
-- Node.js - a JavvaScript runtime that allows us to use JavaScript as a server side technology
+- Node.js - a JavaScript runtime that allows us to use JavaScript as a server side technology
 
-We will use MonoDB Atlas for the MongoDB database.
+We will use MongoDB Atlas for the MongoDB database.
 
 This project also uses
 
