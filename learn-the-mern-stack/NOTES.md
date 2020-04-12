@@ -109,7 +109,7 @@ connect: mongodb+srv://stateofmaine:<password>@m0001-et9dr.mongodb.net/test?retr
 ```
 mkdir client
 cd client
-create-react-app
+create-react-app .
 ```
 
 ###
