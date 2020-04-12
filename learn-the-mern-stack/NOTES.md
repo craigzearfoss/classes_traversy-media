@@ -143,7 +143,7 @@ Add a proxy host into the client/package.json file so we don't have to enter the
 - **dev** allows us to launch both the host and client applications with one command.
 - **client-install** allows us to install client dependencies without having to change into the client folder.
 
-### In the client directory insall the following packages.
+### In the client directory install the following packages.
 
 ```
 cd client
