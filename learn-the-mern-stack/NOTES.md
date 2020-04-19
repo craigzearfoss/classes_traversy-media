@@ -1,4 +1,3 @@
----
 ## If you get the message that the server is already running on the port
 - At a terminal window find the node process
 ```
@@ -12,14 +11,14 @@ kill -9 12285
 ```
 ---
 
-MERN stands for
+### MERN stands for
 
 - MongoDB - a NoSQL database
 - Express - a backend framework mostly used for building APIs
 - React - a front end ui library / framwork
-- Node.js - a JavaScript runtime that allows us to use JavaScript as a server side technology
+- Node.js - a JavvaScript runtime that allows us to use JavaScript as a server side technology
 
-We will use MongoDB Atlas for the MongoDB database.
+We will use MonoDB Atlas for the MongoDB database.
 
 This project also uses
 
@@ -109,7 +108,7 @@ connect: mongodb+srv://stateofmaine:<password>@m0001-et9dr.mongodb.net/test?retr
 ```
 mkdir client
 cd client
-create-react-app .
+create-react-app
 ```
 
 ###
@@ -143,7 +142,7 @@ Add a proxy host into the client/package.json file so we don't have to enter the
 - **dev** allows us to launch both the host and client applications with one command.
 - **client-install** allows us to install client dependencies without having to change into the client folder.
 
-### In the client directory install the following packages.
+### In the client directory insall the following packages.
 
 ```
 cd client
@@ -325,7 +324,7 @@ npm install jsonwebtoken so instead of having a config/keys.js file we'll have a
 npm install config
 ```
 
-- jwt can be used synchronously or asynchronously.
+- jwt can be used synchronously of asynchronously.
 - jwt's authentication is stateless. (Not like sessions where authentication data is stored on the server.)
   - So we need a route to constantly validate that the user is logged in and return the user token.
 
